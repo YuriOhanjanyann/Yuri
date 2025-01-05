@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Send Location via Email</title>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+</head>
+<body>
+  <h1>Send Location via Email</h1>
+  <p>Allow location access to send your location via email.</p>
+
+  <script>
+    // EmailJS կոնֆիգուրացիա
+    (function() {
+      emailjs.init("Yi0t4TAJ-DX-jYkD8"); // Ձեր Public Key-ն
+    })();
+
+    // Գտնվելու վայր ստանալ և ուղարկել էլ․ փոստով
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        // Ուղարկում EmailJS-ով
+        const templateParams = {
+          to_email: "yuriohanjanyann@gmail.com", // Ձեր էլ. փոստը
+          latitude: latitude,
+          longitude: longitude,
+          map_link: `https://www.google.com/maps?q=${latitude},${longitude}`,
+        };
+
+        emailjs.send("service_l0r5lwv", "template_nz5qtig", templateParams)
+          .then(function(response) {
+            alert("Location sent successfully!");
+          }, function(error) {
+            console.error("Failed to send email:", error);
+          });
+      },
+      function(error) {
+        alert("Failed to get location: " + error.message);
+      }
+    );
+  </script>
+</body>
+</html>
